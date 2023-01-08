@@ -1,17 +1,18 @@
-import { supabase } from "../../utils/supabase";
+import { supabase } from "../utils/supabase";
 import { useState } from "react"
 
-export const SignUp = ()=>{
+export default function Login(){
 
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [passwordConf, setPasswordConf] = useState("")
 
-  const onSubmit = async() => {
-    const { error } = await supabase.auth.signUp({
+  const onLogin = async(email:string, password: string) => {
+    const { error } = await supabase.auth.signIn({
       email: email,
       password: password,
     })
+
     if (error) {
       throw error;
     }
@@ -19,7 +20,7 @@ export const SignUp = ()=>{
 
   return (
     <section>
-      <form onSubmit={onSubmit}>
+      <form onSubmit={onLogin}>
         <div>
           <label>メールアドレス</label>
           <input type="email"
@@ -42,7 +43,7 @@ export const SignUp = ()=>{
           />
         </div>
         <div>
-          <button type="submit">サインアップ</button>
+          <button type="submit">ログイン</button>
         </div>
       </form>
     </section>
