@@ -2,24 +2,24 @@ import Head from "next/head";
 import styles from "../styles/Home.module.css";
 import { supabase } from "../utils/supabase";
 import { useState } from "react";
+import { useRouter } from 'next/router';
 
-export default function SignUp(){
-
-  const [email, setEmail] = useState("")
+export default function PasswordReset(){
+  const router = useRouter();
   const [password, setPassword] = useState("")
   const [passwordConf, setPasswordConf] = useState("")
 
   const onSubmit = async(e) => {
     e.preventDefault();
     try{
-      const { error:signUpError } = await supabase.auth.signUp({
-        email: email,
-        password: password,
-      })
-      if (signUpError) {
-        throw signUpError;
+      const { error:passwordResetError } = await supabase.auth.updateUser({
+        password
+      });
+      if (passwordResetError) {
+        throw passwordResetError;
       }
-    alert('登録完了メールを確認してください');
+      await router.push("/top");
+      alert('パスワード変更が完了しました');
     }catch(error){
       alert('エラーが発生しました');
     }
@@ -29,19 +29,12 @@ export default function SignUp(){
     <>
       <div className={styles.container}>
       <Head>
-        <title>新規登録画面</title>
+        <title>パスワード再登録画面</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className={styles.main}>
         <div className={styles.grid}>
         <form onSubmit={onSubmit}>
-        <div>
-          <label>メールアドレス</label>
-          <input type="email"
-            required value={email}
-            onChange={e => setEmail(e.target.value)}
-          />
-        </div>
         <div>
           <label>パスワード</label>
           <input type="password"
@@ -57,7 +50,7 @@ export default function SignUp(){
           />
         </div>
         <div>
-          <button type="submit">サインアップ</button>
+          <button type="submit">パスワード変更</button>
         </div>
       </form>
         </div>

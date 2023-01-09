@@ -12,21 +12,15 @@ const Layout = ({ children }: Props) => {
 			<Head>
 				<title>MyTemplate - sample page</title>
 			</Head>
-
 			<header className=''>
-				<Link href='/'>
-					Home
-				</Link>
-				<Link href='/signup'>
-				  SignUp
-				</Link>
-				<Link href='/blogs/1'>
-				  Blog single
+        <Link href='/'>
+          ホーム画面
+        </Link>
+				<Link href='/login'>
+				  サインインはこちらから
 				</Link>
 			</header>
-
 			<div className='content'>{children}</div>
-
 			<footer className=''></footer>
 		</div>
 	);
