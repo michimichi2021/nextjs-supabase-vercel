@@ -11,7 +11,7 @@ export default function Sendemail(){
     e.preventDefault();
     try{
       const { error:sendEmailError } =await supabase.auth.resetPasswordForEmail(email, {
-        redirectTo: 'http://localhost:3000/passwordReset',
+        redirectTo: 'http://localhost:3000/passwordReset/',
       });
       if (sendEmailError) {
         throw sendEmailError;
