@@ -19,14 +19,10 @@ export default function Top(){
           content: newContent,
         },
       ]);
-     if (error) throw error;
-
-      await indexPost();
-
-      useEffect(() => {
-        setNewTitle("");
-        setNewContent("");
-      }, [])
+      if (error) throw error;
+      await router.push("/top");
+      setNewTitle("")
+      setNewContent("")
     } catch (error) {
        alert(error.message);
     }

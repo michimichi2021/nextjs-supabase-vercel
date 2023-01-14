@@ -9,26 +9,6 @@ import { useState } from 'react';
 export default function Top(){
   const router = useRouter();
 
-  const usePost = async (e) => {
-    const [newTitle, setNewTitle] = useState("");
-    const [newContent, setNewContent] = useState("");
-    e.preventDefault();
-    try {
-      const { error } = await supabase.from("posts").insert([
-        {
-          title: newTitle,
-          content: newContent,
-        },
-      ]);
-     if (error) throw error;
-
-       setNewTitle("");
-       setNewContent("");
-    } catch (error) {
-       alert(error.message);
-    }
-  };
-
 
   const indexPost = async(e) => {
     try {
@@ -73,23 +53,6 @@ export default function Top(){
       <main className={styles.main}>
         <div>
           <h1>トップページ</h1>
-           <div>
-              <div>
-                <label>タイトル</label><br/>
-                <input
-                  type="text"
-                  value={newTitle}
-                  onChange={(e) => setNewTitle(e.target.value)}
-                />
-              </div>
-              <div>
-                <label>内容</label><br/>
-                <textarea name="name" rows={10} cols={40}  onChange={(e) => setNewContent(e.target.value)}/>
-              </div>
-              <div>
-                <button type="submit">登録</button>
-              </div>
-            </div>
            <div>
             <form onSubmit={Logout}>
               <button type="submit">ログアウトする</button>
