@@ -35,24 +35,24 @@ export default function PasswordReset(){
       <main className={styles.main}>
         <div className={styles.grid}>
         <form onSubmit={onSubmit}>
-        <div>
-          <label>パスワード</label>
-          <input type="password"
-            required value={password}
-            onChange={e => setPassword(e.target.value)}
-          />
-        </div>
-        <div>
-          <label>パスワード（確認）</label>
-          <input type="password"
-            required value={passwordConf}
-            onChange={e => setPasswordConf(e.target.value)}
-          />
-        </div>
-        <div>
-          <button type="submit">パスワード変更</button>
-        </div>
-      </form>
+          <div>
+            <label>パスワード</label>
+            <input type="password"
+              required value={password}
+              onChange={e => setPassword(e.target.value)}
+            />
+          </div>
+          <div>
+            <label>パスワード（確認）</label>
+            <input type="password"
+              required value={passwordConf}
+              onChange={e => setPasswordConf(e.target.value)}
+            />
+          </div>
+          <div>
+            <button type="submit">パスワード変更</button>
+          </div>
+        </form>
         </div>
       </main>
       <footer className={styles.footer}>

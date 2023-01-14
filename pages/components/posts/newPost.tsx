@@ -1,17 +1,16 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import Head from "next/head";
-import styles from "../styles/Home.module.css";
-import { supabase } from "../utils/supabase";
+import { supabase } from "../../../utils/supabase";
 import { useRouter } from 'next/router';
-import { useState } from 'react';
-
-
+import { useState,useEffect } from 'react';
+import indexPost from '../../top';
 
 export default function Top(){
   const router = useRouter();
+  const [newTitle, setNewTitle] = useState("");
+  const [newContent, setNewContent] = useState("");
 
-  const usePost = async (e) => {
-    const [newTitle, setNewTitle] = useState("");
-    const [newContent, setNewContent] = useState("");
+  const addPost = async (e) => {
     e.preventDefault();
     try {
       const { error } = await supabase.from("posts").insert([
@@ -22,34 +21,18 @@ export default function Top(){
       ]);
      if (error) throw error;
 
-       setNewTitle("");
-       setNewContent("");
+      await indexPost();
+
+      useEffect(() => {
+        setNewTitle("");
+        setNewContent("");
+      }, [])
     } catch (error) {
        alert(error.message);
     }
   };
 
 
-  const indexPost = async(e) => {
-    try {
-      e.preventDefault();
-      const { error } = await supabase
-      .from("posts")
-      .select("*")
-      .order("created_at", { ascending: false });
-      if (error) throw error;
-    } catch (error) {
-      alert(error.message);
-    }
-  };
-
-  const updatePost = (e) => {
-    e.preventDefault();
-  };
-
-  const deletePost = (e) => {
-    e.preventDefault();
-  };
 
   const Logout = async(e) => {
     e.preventDefault();
@@ -65,15 +48,15 @@ export default function Top(){
   }
   return(
     <>
-      <div className={styles.container}>
+      <div>
       <Head>
-        <title>トップページ</title>
+        <title>新規投稿機能</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className={styles.main}>
+      <main>
         <div>
-          <h1>トップページ</h1>
-           <div>
+          <form onSubmit={addPost}>
+            <div>
               <div>
                 <label>タイトル</label><br/>
                 <input
@@ -90,14 +73,15 @@ export default function Top(){
                 <button type="submit">登録</button>
               </div>
             </div>
-           <div>
+          </form>
+          <div>
             <form onSubmit={Logout}>
               <button type="submit">ログアウトする</button>
             </form>
           </div>
         </div>
       </main>
-      <footer className={styles.footer}>
+      <footer>
       </footer>
     </div>
     </>

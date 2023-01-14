@@ -19,7 +19,7 @@ export default function SignUp(){
       if (signUpError) {
         throw signUpError;
       }
-    alert('登録完了メールを確認してください');
+     alert('登録完了メールを確認してください');
     }catch(error){
       alert('エラーが発生しました');
     }
