@@ -1,14 +1,19 @@
+/* eslint-disable react/jsx-key */
 /* eslint-disable react-hooks/rules-of-hooks */
 import Head from "next/head";
 import { supabase } from "../../../utils/supabase";
 import { useRouter } from 'next/router';
 import { useState,useEffect } from 'react';
-import indexPost from '../../top';
 
 export default function Top(){
   const router = useRouter();
   const [newTitle, setNewTitle] = useState("");
   const [newContent, setNewContent] = useState("");
+  const [posts, setPosts] = useState([]);
+
+  useEffect(() => {
+       (async () => await indexPost())();
+  }, []);
 
   const addPost = async (e) => {
     e.preventDefault();
@@ -20,11 +25,26 @@ export default function Top(){
         },
       ]);
       if (error) throw error;
+      await indexPost();
       await router.push("/top");
       setNewTitle("")
       setNewContent("")
     } catch (error) {
-       alert(error.message);
+      alert('データの新規登録ができません');
+    }
+  };
+
+  const indexPost = async() => {
+    try {
+      const { data,error } = await supabase
+      .from("posts")
+      .select("*")
+      .order("created_at", { ascending: false });
+      if (error) throw error;
+      setPosts(data);
+    } catch (error) {
+      alert(error.message);
+      setPosts([]);
     }
   };
 
@@ -75,6 +95,14 @@ export default function Top(){
               <button type="submit">ログアウトする</button>
             </form>
           </div>
+        </div>
+        <div>
+          {posts.map((post, idx) => (
+            <table>
+              <tr key={idx}><td>{post.created_at.substr(0, 10)}</td><td>{post.title}</td><td>{post.content}</td></tr>
+
+            </table>
+          ))}
         </div>
       </main>
       <footer>

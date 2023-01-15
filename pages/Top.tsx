@@ -9,20 +9,6 @@ import { useState } from 'react';
 export default function Top(){
   const router = useRouter();
 
-
-  const indexPost = async(e) => {
-    try {
-      e.preventDefault();
-      const { error } = await supabase
-      .from("posts")
-      .select("*")
-      .order("created_at", { ascending: false });
-      if (error) throw error;
-    } catch (error) {
-      alert(error.message);
-    }
-  };
-
   const updatePost = (e) => {
     e.preventDefault();
   };
@@ -53,7 +39,7 @@ export default function Top(){
       <main className={styles.main}>
         <div>
           <h1>トップページ</h1>
-           <div>
+          <div>
             <form onSubmit={Logout}>
               <button type="submit">ログアウトする</button>
             </form>
