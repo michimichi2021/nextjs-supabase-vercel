@@ -19,6 +19,9 @@ const Layout = ({ children }: Props) => {
 				<Link href='/login'>
 				  サインインはこちらから
 				</Link>
+				<Link href='/top'>
+				  トップページ
+				</Link>
 			</header>
 			<div className='content'>{children}</div>
 			<footer className=''></footer>
