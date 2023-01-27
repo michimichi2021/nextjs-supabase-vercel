@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { uploadStorage } from './storage';
+import { supabase } from "../utils/supabase";
 
 export default function Example(){
   const [ path,setPathName ] = useState<string | undefined>();
@@ -9,7 +10,8 @@ export default function Example(){
       fileList,
       bucketName: "pictures",
     });
-    if (path) setPathName(path);// セットされるように
+    const { data } = supabase.storage.from("pictures").getPublicUrl(path)
+    if (path) setPathName(data.publicUrl);// セットされるように
     console.log(path)
   };
   return (
@@ -23,10 +25,11 @@ export default function Example(){
 				accept="image/png, image/jpeg"
         onChange={(e) => {
           const filiList = e.target?.files;
+          console.log(filiList);
           handleUploadStorage(filiList);
         }}
       />
-      <img src={path} />;
+      <img src={path} alt="" width="800" height="500"/>;
     </label>
   );
 };
