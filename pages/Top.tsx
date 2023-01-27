@@ -3,8 +3,9 @@ import styles from "../styles/Home.module.css";
 import { supabase } from "../utils/supabase";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
+import Image from "next/image";
 
-export default function Top() {
+export default function Top(props){
   const router = useRouter();
   const [newTitle, setNewTitle] = useState("");
   const [newContent, setNewContent] = useState("");
@@ -55,6 +56,31 @@ export default function Top() {
       alert("エラーが発生しました");
     }
   };
+
+  const Picture = async () => {
+    // 画像の名前を指定
+    const { publicURL } = supabase.storage
+      .from("pictures")
+      .getPublicUrl("IMG_7249.JPG");
+
+    return {
+      props: {
+        url: publicURL,
+      },
+    };
+  };
+
+  const getBucket = async () => {
+    const { data } = await supabase.storage.getBucket("pictures");
+
+    console.log(data);
+  };
+
+  useEffect(() => {
+    getBucket();
+  }, []);
+
+
   return (
     <>
       <div className={styles.container}>
@@ -68,6 +94,23 @@ export default function Top() {
             <div>
               <form onSubmit={addPost}>
                 <div>
+                  <div>
+                    <label htmlFor="image" className='mt-4'>画像を選択</label>
+                    {props.url ? (
+                      <Image
+                        src={props.url}
+                        alt="Avatar"
+                        width="200"
+                        height="200"
+                        style={{ borderRadius: "50%" }}
+                      />
+                    ) : (
+                      <div
+                        className="avatar no-image"
+                        style={{ height: "200px", width: "200px", borderRadius: "50%", background: "gray" }}
+                      />
+                    )}
+                  </div>
                   <div>
                     <label>タイトル</label>
                     <br />
