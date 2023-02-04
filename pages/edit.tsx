@@ -3,66 +3,17 @@ import styles from "../styles/Home.module.css";
 import { supabase } from "../utils/supabase";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
-import { User } from "@supabase/supabase-js";
 
-export default function Top() {
+
+export default function Edit(){
   const router = useRouter();
   const [newTitle, setNewTitle] = useState("");
   const [newContent, setNewContent] = useState("");
   const [posts, setPosts] = useState([]);
 
-  const [user, setUser] = useState<User | null>(null);
-
   useEffect(() => {
-    (async () => {
-      await indexPost();
-      const { data } = await supabase.auth.getUser();
-      setUser(data.user);
-    })();
+    (async () => await indexPost())();
   }, []);
-
-  const addPost = async (e) => {
-    if (user === null) return;
-
-    e.preventDefault();
-    try {
-      const { error } = await supabase.from("posts").insert([
-        {
-          user_id: user.id,
-          title: newTitle,
-          content: newContent,
-        },
-      ]);
-      if (error) throw error;
-      await indexPost();
-      setNewTitle("");
-      setNewContent("");
-    } catch (error) {
-      alert("データの新規登録ができません");
-    }
-  };
-
-  const handleDelete = async (postID: number) => {
-    try {
-      const res = await supabase.from("posts").delete().eq("id", postID);
-      const { data: posts } = await supabase.from("posts").select("*");
-      setPosts(posts);
-      console.log("res", res, postID);
-    } catch (error) {
-      alert(error.message);
-    }
-  };
-
-  const indexPost = async () => {
-    try {
-      const { data: posts, error } = await supabase.from("posts").select("*");
-      if (error) throw error;
-      setPosts(posts);
-    } catch (error) {
-      alert(error.message);
-      setPosts([]);
-    }
-  };
 
   const Logout = async (e) => {
     e.preventDefault();
@@ -88,6 +39,40 @@ export default function Top() {
   }, []);
 
 
+
+  // const updatePost = async (e) => {
+  //   e.preventDefault();
+  //   try {
+  //     const { error } = await supabase.from("posts").insert([
+  //       {
+  //         title: newTitle,
+  //         content: newContent,
+  //       },
+  //     ]);
+  //     if (error) throw error;
+
+  //   } catch (error) {
+  //     alert("データを更新できません");
+  //   }
+  // };
+
+  // const updatePost = async (e) => {
+  //   e.preventDefault();
+  //   try {
+  //     const { error } = await supabase.from("posts").insert([
+  //       {
+  //         title: newTitle,
+  //         content: newContent,
+  //       },
+  //     ]);
+  //     if (error) throw error;
+
+  //   } catch (error) {
+  //     alert("データを更新できません");
+  //   }
+  // };
+
+
   return (
     <>
       <div className={styles.container}>
@@ -101,6 +86,23 @@ export default function Top() {
             <div>
               <form onSubmit={addPost}>
                 <div>
+                  {/* <div>
+                    <label htmlFor="image" className='mt-4'>画像を選択</label>
+                    {props.url ? (
+                      <Image
+                        src={props.url}
+                        alt="Avatar"
+                        width="200"
+                        height="200"
+                        style={{ borderRadius: "50%" }}
+                      />
+                    ) : (
+                      <div
+                        className="avatar no-image"
+                        style={{ height: "200px", width: "200px", borderRadius: "50%", background: "gray" }}
+                      />
+                    )}
+                  </div> */}
                   <div>
                     <label>タイトル</label>
                     <br />
@@ -141,14 +143,8 @@ export default function Top() {
                       <td>{post.created_at.substr(0, 10)}</td>
                       <td>{post.title}</td>
                       <td>{post.content}</td>
-                      <td>
-                        <button
-                          onClick={() => handleDelete(post.id)}
-                          className="border-gray-300 border-2 rounded p-1 w-12"
-                        >
-                          削除
-                        </button>
-                      </td>
+                      <td><button onClick={() => deletePost(post.id)} className='border-gray-300 border-2 rounded p-1 w-12'>削除</button></td>
+                      <td> <button onClick={()=>router.push("/edit")}>編集する</button></td>
                     </tr>
                   ))}
                 </tbody>

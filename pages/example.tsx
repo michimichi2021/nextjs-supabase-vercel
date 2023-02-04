@@ -11,8 +11,7 @@ export default function Example(){
       bucketName: "pictures",
     });
     const { data } = supabase.storage.from("pictures").getPublicUrl(path)
-    if (path) setPathName(data.publicUrl);// セットされるように
-    console.log(path)
+    if (path) setPathName(data.publicUrl);
   };
   return (
     <label htmlFor="file-upload">
@@ -29,7 +28,7 @@ export default function Example(){
           handleUploadStorage(filiList);
         }}
       />
-      <img src={path} alt="" width="800" height="500"/>;
+      <img src={path} alt="" width="300" height="200"/>;
     </label>
   );
 };
